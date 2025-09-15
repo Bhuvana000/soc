@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Editable To-Do List</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body 
+    { 
+    font-family: Arial, sans-serif;
+     padding: 20px;
+     }
+    ul
+     { 
+      list-style-type: none; 
+      padding: 0; 
+    }
+    li { 
+      padding: 8px; 
+      cursor: pointer; 
+      border-bottom: 1px solid #ddd; 
+    }
+    input.edit {
+      width: 90%;
+      padding: 6px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h2>My To-Do List</h2>
+  <input type="text" id="new-task" placeholder="Add a new task">
+  <button id="add-btn">Add</button>
+
+  <ul id="todo-list">
+    <li>Buy groceries</li>
+    <li>Complete homework</li>
+    <li>Go for a walk</li>
+  </ul>
+
+  <script>
+    $(document).ready(function() {
+      $("#add-btn").click(function() {
+        let taskText = $("#new-task").val().trim();
+        if (taskText) {
+          $("#todo-list").append("<li>" + taskText + "</li>");
+          $("#new-task").val(""); 
+        }
+      });
+      $("#todo-list").on("dblclick", "li", function() {
+        let currentText = $(this).text();       
+        let input = $("<input type='text' class='edit'>").val(currentText); 
+        $(this).html(input);                   
+        input.focus();
+         input.keydown(function(e) {            
+          if (e.key === "Enter") {
+            let newText = $(this).val();        
+            $(this).parent().replaceWith("<li>" + newText + "</li>"); 
+          }
+        });
+        input.blur(function() {                 
+          let newText = $(this).val();
+          $(this).parent().replaceWith("<li>" + newText + "</li>");
+        });
+      });
+    });
+  </script>
+</body>
+</html>
